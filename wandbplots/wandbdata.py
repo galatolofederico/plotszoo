@@ -50,5 +50,5 @@ class WandbData:
                 one_level_run[keep_key] = run[keep_key]
             one_level_runs.append(one_level_run)
 
-        self.runs = pd.DataFrame(one_level_runs)
+        self.scalars = pd.DataFrame(one_level_runs)
 

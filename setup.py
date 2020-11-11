@@ -17,6 +17,8 @@ setuptools.setup(
         "wandb==0.10.8",
         "numpy==1.19.4",
         "pandas==1.1.4",
+        "scipy==1.5.4",
+        "matplotlib==3.3.2",
         "requests==2.24.0"
     ],
     classifiers=[

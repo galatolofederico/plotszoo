@@ -1,1 +1,2 @@
-from .wandbdata import WandbData
+from wandbplots.wandbdata import WandbData
+import wandbplots.scalars
