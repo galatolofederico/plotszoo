@@ -1,2 +1,2 @@
-from plotszoo.wandbdata import WandbData
+import plotszoo.data
 import plotszoo.scalars
