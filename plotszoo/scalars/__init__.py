@@ -1,1 +1,2 @@
+import plotszoo.scalars.grouped
 from plotszoo.scalars.parallel import ScalarsParallelCoordinates
