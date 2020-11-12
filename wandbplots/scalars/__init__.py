@@ -1,0 +1,1 @@
+from wandbplots.scalars.parallel import ScalarsParallelCoordinates
