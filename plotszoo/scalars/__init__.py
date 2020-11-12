@@ -1,0 +1,1 @@
+from plotszoo.scalars.parallel import ScalarsParallelCoordinates

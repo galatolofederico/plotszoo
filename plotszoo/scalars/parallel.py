@@ -10,7 +10,6 @@ class ScalarsParallelCoordinates:
 
         self.groups.append(self.target)
 
-
     def _set_ticks_for_axis(self, dim, ax, ticks):
         min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
         step = val_range / float(ticks-1)

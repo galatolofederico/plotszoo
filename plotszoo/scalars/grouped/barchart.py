@@ -1,6 +1,6 @@
 import numpy as np
 
-from wandbplots.utils import confidence_interval
+from plotszoo.utils import confidence_interval
 
 class GroupedScalarsBarchart:
     def __init__(self, data, groups, target):

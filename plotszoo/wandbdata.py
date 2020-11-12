@@ -7,7 +7,7 @@ api = wandb.Api()
 
 
 class WandbData:
-    def __init__(self, username, project, query, cache=True, cache_dir="./wandb-plots.cache", force_update=False):
+    def __init__(self, username, project, query, cache=True, cache_dir="./.wandb-plots-cache", force_update=False):
         try:
             self.query = json.dumps(query)
         except:
