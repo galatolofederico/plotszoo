@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import ticker
+import matplotlib
 
 class ScalarsParallelCoordinates:
     def __init__(self, data, groups, target):
@@ -11,6 +11,7 @@ class ScalarsParallelCoordinates:
         self.groups.append(self.target)
 
     def _set_ticks_for_axis(self, dim, ax, ticks):
+        # TODO: custom ticks and scale for each ax
         min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
         step = val_range / float(ticks-1)
         tick_labels = [round(min_val + step * i, 2) for i in range(ticks)]
@@ -21,35 +22,38 @@ class ScalarsParallelCoordinates:
         ax.yaxis.set_ticks(ticks)
         ax.set_yticklabels(tick_labels)
 
-    def plot(self, axes, ticks=6, adjust_whitespaces=True):
-        #assert type(axes) is list, "You must pass a list (you passed a %s)" % (type(axes))
-        #assert len(axes) - 1 != len(self.groups), "You must pass a list of n-1 axes when you use n groups (axes: %d groups: %d)" % (len#(axes), len(self.groups))
+    def plot(self, axes, ticks=6, adjust_whitespaces=True, dropna=True, cmap="Blues"):
+        assert len(axes) != len(self.groups), "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups))
         
         self.norm_df = self.data.scalars.copy()
+        if dropna: self.norm_df = self.norm_df.dropna(subset=self.groups)
+
         self.min_max_range = {}
         for col in self.groups:
-            serie = self.data.scalars[col]
+            serie = self.norm_df[col]
             self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
             self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
-
+        
         x = list(range(0, len(self.groups)))
+        cmap = matplotlib.cm.get_cmap(cmap)
+        norm = matplotlib.colors.Normalize(vmin=self.norm_df[self.target].min(), vmax=self.norm_df[self.target].max())
+
         for i, ax in enumerate(axes):
             for idx in self.norm_df.index:
-                ax.plot(x, self.norm_df.loc[idx, self.groups])
+                ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap(norm(self.norm_df.loc[idx, self.target])))
             ax.set_xlim([x[i], x[i+1]])
 
-
         for dim, ax in enumerate(axes):
-            ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
+            ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([dim]))
             self._set_ticks_for_axis(dim, ax, ticks)
             ax.set_xticklabels([self.groups[dim]])
+                
 
-        #ax = plt.twinx(axes[-1])
-        #dim = len(axes)
-        #ax.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
-        #self._set_ticks_for_axis(dim, ax, ticks=6)
-        #ax.set_xticklabels([self.groups[-2], self.groups[-1]])
-
+        ax = plt.twinx(axes[-1])
+        dim = len(axes)
+        ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([x[-2], x[-1]]))
+        self._set_ticks_for_axis(dim, ax, ticks)
+        ax.set_xticklabels([self.groups[-2], self.groups[-1]])
 
         if adjust_whitespaces:
             plt.subplots_adjust(wspace=0)

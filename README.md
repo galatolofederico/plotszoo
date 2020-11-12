@@ -1,1 +1,1 @@
-# wandb-plots
+# plotszoo
