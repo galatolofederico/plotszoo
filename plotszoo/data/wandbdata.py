@@ -1,14 +1,14 @@
-import wandb
 import pandas as pd
 import hashlib
 import json
 import os
-api = wandb.Api()
 
 from plotszoo.data import DataCollection
 
 class WandbData(DataCollection):
     def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False):
+        import wandb
+
         super(WandbData, self).__init__()
         try:
             self.query = json.dumps(query)
@@ -26,6 +26,7 @@ class WandbData(DataCollection):
         
     def pull_scalars(self, state="finished"):
         assert len(self.data_types) == 0, "You can pull the data once for each data object"
+        api = wandb.Api()
 
         self.runs = None
         if self.cache and os.path.exists(self.cache_file) and not self.force_update:
@@ -68,7 +69,8 @@ class WandbData(DataCollection):
 
     def pull_series(self):
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
-
+        api = wandb.Api()
+        
         self.series = {}
         for index, run in self.scalars.iterrows():
             cache_file = os.path.join(self.cache_dir, run["id"]+".csv")

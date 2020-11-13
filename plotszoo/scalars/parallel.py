@@ -25,7 +25,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         ax.set_yticklabels(tick_labels)
 
     def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues"):
-        assert len(axes) != len(self.groups), "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups))
+        assert len(axes) == len(self.groups) - 1, "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups) - 1)
         
         self.norm_df = self.data.scalars.copy()
 
