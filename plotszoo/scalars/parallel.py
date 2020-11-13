@@ -24,11 +24,10 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         ax.yaxis.set_ticks(ticks)
         ax.set_yticklabels(tick_labels)
 
-    def plot(self, axes, ticks=6, adjust_whitespaces=True, dropna=True, cmap="Blues"):
+    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues"):
         assert len(axes) != len(self.groups), "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups))
         
         self.norm_df = self.data.scalars.copy()
-        if dropna: self.norm_df = self.norm_df.dropna(subset=self.groups)
 
         self.min_max_range = {}
         for col in self.groups:

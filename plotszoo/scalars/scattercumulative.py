@@ -4,7 +4,7 @@ from plotszoo.scalars import ScalarsPlot
 
 class ScalarsScatterCumulative(ScalarsPlot):
     def __init__(self, data, x, y, cumulative_fn=np.max):
-        ScalarsScatterCumulative(ScalarsScatterCumulative, self).__init__(data)
+        super(ScalarsScatterCumulative, self).__init__(data)
         self.x = x
         self.y = y
         self.cumulative_fn = cumulative_fn
