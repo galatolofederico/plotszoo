@@ -9,6 +9,20 @@ class ScalarsScatterCumulative(ScalarsPlot):
         self.y = y
         self.cumulative_fn = cumulative_fn
 
-    def plot(self, ax):
-        print(self.data.scalars.keys())
-        assert False
+    def plot(self, ax, sort=False):
+        s = []
+        for index, row in self.data.scalars.iterrows():
+            s.append(dict(
+                x=row[self.x],
+                y=row[self.y]
+            ))
+        if sort:
+            s = sorted(s, key=lambda e: e["x"]) 
+
+        cumulative = []
+        for e in s:
+            cumulative.append(e["y"])
+            e["c"] = self.cumulative_fn(cumulative)
+
+        ax.scatter([e["x"] for e in s], [e["y"] for e in s])
+        ax.plot([e["x"] for e in s], [e["c"] for e in s])
