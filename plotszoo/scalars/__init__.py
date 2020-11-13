@@ -1,2 +1,3 @@
-import plotszoo.scalars.grouped
+from plotszoo.scalars.scalarsplot import ScalarsPlot
 from plotszoo.scalars.parallel import ScalarsParallelCoordinates
+from plotszoo.scalars.scattercumulative import ScalarsScatterCumulative

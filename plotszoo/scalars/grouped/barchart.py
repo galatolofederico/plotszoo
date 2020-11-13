@@ -1,10 +1,11 @@
 import numpy as np
 
+from plotszoo.scalars import ScalarsPlot
 from plotszoo.utils import confidence_interval
 
-class GroupedScalarsBarchart:
+class GroupedScalarsBarchart(ScalarsPlot):
     def __init__(self, data, groups, target):
-        self.data = data
+        super(GroupedScalarsBarchart, self).__init__(data)
         self.groups = groups
         self.target = target
 

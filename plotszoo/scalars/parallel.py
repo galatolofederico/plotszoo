@@ -2,9 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-class ScalarsParallelCoordinates:
+from plotszoo.scalars import ScalarsPlot
+
+class ScalarsParallelCoordinates(ScalarsPlot):
     def __init__(self, data, groups, target):
-        self.data = data
+        super(ScalarsParallelCoordinates, self).__init__(data)
         self.target = target
         self.groups = groups
 
