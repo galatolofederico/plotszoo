@@ -5,9 +5,11 @@ import json
 import os
 api = wandb.Api()
 
+from plotszoo.data import DataCollection
 
-class WandbData:
+class WandbData(DataCollection):
     def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False):
+        super(WandbData, self).__init__()
         try:
             self.query = json.dumps(query)
         except:
@@ -21,8 +23,6 @@ class WandbData:
 
         self.id = hashlib.sha256(("%s/%s/%s" % (self.username, self.project, self.query)).encode()).hexdigest()
         self.cache_file = os.path.join(self.cache_dir, self.id+".json")
-
-        self.data_types = []
         
     def pull_scalars(self, state="finished"):
         assert len(self.data_types) == 0, "You can pull the data once for each data object"
@@ -84,3 +84,5 @@ class WandbData:
                     print("[!] Writing cache file %s" % (cache_file, ))
                     series_df.to_csv(cache_file)
             self.series.append(series_df)
+        
+        self.data_types.append("series")
