@@ -69,8 +69,8 @@ class WandbData(DataCollection):
     def pull_series(self):
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
 
-        self.series = []
-        for run in self.runs:
+        self.series = {}
+        for index, run in self.scalars.iterrows():
             cache_file = os.path.join(self.cache_dir, run["id"]+".csv")
             series_df = None
             if self.cache and os.path.exists(cache_file) and not self.force_update:
@@ -83,6 +83,6 @@ class WandbData(DataCollection):
                 if self.cache:
                     print("[!] Writing cache file %s" % (cache_file, ))
                     series_df.to_csv(cache_file)
-            self.series.append(series_df)
+            self.series[index] = series_df
         
         self.data_types.append("series")
