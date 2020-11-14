@@ -4,3 +4,6 @@ __pycache__/
 /build
 /dist
 *.egg-info/
+
+sphinx-docs/build/*
+!sphinx-docs/build/.gitkeep
