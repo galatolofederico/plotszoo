@@ -7,8 +7,11 @@ from plotszoo.data import DataCollection
 
 class WandbData(DataCollection):
     def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False):
-        import wandb
-
+        try:
+            import wandb
+        except:
+            raise Exception("You must install 'wandb' to use this class")
+        
         super(WandbData, self).__init__()
         try:
             self.query = json.dumps(query)
@@ -26,6 +29,7 @@ class WandbData(DataCollection):
         
     def pull_scalars(self, state="finished"):
         assert len(self.data_types) == 0, "You can pull the data once for each data object"
+        import wandb
         api = wandb.Api()
 
         self.runs = None
@@ -38,7 +42,7 @@ class WandbData(DataCollection):
             self.runs = []
             for wandb_run in wandb_runs:
                 if state is None or wandb_run.state == state:
-                    runs.append(dict(
+                    self.runs.append(dict(
                         id=wandb_run.id,
                         name=wandb_run.name,
                         config=dict(wandb_run.config),
@@ -69,6 +73,7 @@ class WandbData(DataCollection):
 
     def pull_series(self):
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
+        import wandb
         api = wandb.Api()
         
         self.series = {}
