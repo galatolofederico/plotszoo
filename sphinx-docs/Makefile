@@ -15,10 +15,10 @@ help:
 .PHONY: help Makefile
 
 docs:
-	#sphinx-apidoc -f -o source/ ../plotszoo
 	@make clean
-	@make html
 	rm -rf ../docs
+	PYTHONPATH=.. find ../examples/ -iname "*.py" -exec python {} \;
+	@make html
 	cp -r build/html/ ../docs
 
 # Catch-all target: route all unknown targets to Sphinx using the new

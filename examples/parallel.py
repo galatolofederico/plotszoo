@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 import plotszoo
@@ -17,5 +18,5 @@ parallel_plot = plotszoo.scalars.ScalarsParallelCoordinates(data, iris["feature_
 
 parallel_plot.plot(axes, cmap="tab10")
 
-fig.set_size_inches(30, 10)
-plt.savefig("examples/images/parallel.png")
+fig.set_size_inches(20, 10)
+plt.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/parallel.png"))

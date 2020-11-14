@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Plotting Ungrouped Scalars &mdash; plotszoo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Plotting Grouped Scalars" href="groupedscalars.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> plotszoo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data loading</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="scalars.html">Plotting Scalars</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="groupedscalars.html">Plotting Grouped Scalars</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Ungrouped Scalars</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">plotszoo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="scalars.html">Plotting Scalars</a> &raquo;</li>
+        
+      <li>Plotting Ungrouped Scalars</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ungroupedscalars.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="plotting-ungrouped-scalars">
+<h1>Plotting Ungrouped Scalars<a class="headerlink" href="#plotting-ungrouped-scalars" title="Permalink to this headline">¶</a></h1>
+<p>Here there are the classes that plot ungrouped scalars</p>
+<dl class="py class">
+<dt id="plotszoo.scalars.ScalarsParallelCoordinates">
+<em class="property">class </em><code class="sig-prename descclassname">plotszoo.scalars.</code><code class="sig-name descname">ScalarsParallelCoordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">groups</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.ScalarsParallelCoordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a parallel coordinates plot with respect to <code class="docutils literal notranslate"><span class="pre">groups</span></code> and using <code class="docutils literal notranslate"><span class="pre">target</span></code> as rightmost field</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">data</dt>
+<dd class="field-odd"><p><a class="reference internal" href="data.html#plotszoo.data.DataCollection" title="plotszoo.data.DataCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">plotszoo.data.DataCollection</span></code></a> with some scalars</p>
+</dd>
+<dt class="field-even">groups</dt>
+<dd class="field-even"><p>columns of <code class="docutils literal notranslate"><span class="pre">data</span></code> scalars to plot the data against</p>
+</dd>
+<dt class="field-odd">target</dt>
+<dd class="field-odd"><p>column of <code class="docutils literal notranslate"><span class="pre">data</span></code>, plotted rightmost and used to color the plot</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">import</span> <span class="nn">plotszoo</span>
+
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">scalars</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">iris</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">])</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">plotszoo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataCollection</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_scalars</span><span class="p">(</span><span class="n">scalars</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">]),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">parallel_plot</span> <span class="o">=</span> <span class="n">plotszoo</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">ScalarsParallelCoordinates</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">],</span> <span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="n">parallel_plot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;images/parallel.png&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/parallel.png"><img alt="_images/parallel.png" src="_images/parallel.png" style="width: 600px;" /></a>
+<dl class="py method">
+<dt id="plotszoo.scalars.ScalarsParallelCoordinates.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axes</span></em>, <em class="sig-param"><span class="n">ticks</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">adjust_whitespaces</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'Blues'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.ScalarsParallelCoordinates.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the parallel coordinates chart</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">axes</dt>
+<dd class="field-odd"><p>List of <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> axes to plot to (you must use the same number of axes and groups)</p>
+</dd>
+<dt class="field-even">ticks</dt>
+<dd class="field-even"><p>Number of ticks to show in the axes (Default: 6)</p>
+</dd>
+<dt class="field-odd">cmap</dt>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> colormap to use (Default: “Blues”)</p>
+</dd>
+<dt class="field-even">adjust_withspaces</dt>
+<dd class="field-even"><p>Call <code class="docutils literal notranslate"><span class="pre">plt.subplots_adjust(wspace=0)</span></code> to make the plot prettier (can have side-effects) (Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="plotszoo.scalars.ScalarsScatterCumulative">
+<em class="property">class </em><code class="sig-prename descclassname">plotszoo.scalars.</code><code class="sig-name descname">ScalarsScatterCumulative</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">cumulative_fn=&lt;function amax&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.ScalarsScatterCumulative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="groupedscalars.html" class="btn btn-neutral float-left" title="Plotting Grouped Scalars" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Federico A. Galatolo
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

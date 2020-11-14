@@ -5,6 +5,22 @@ import matplotlib
 from plotszoo.scalars import ScalarsPlot
 
 class ScalarsParallelCoordinates(ScalarsPlot):
+    r"""
+    Plot a parallel coordinates plot with respect to ``groups`` and using ``target`` as rightmost field
+
+    Args:
+        :data: :class:`plotszoo.data.DataCollection` with some scalars
+        :groups: columns of ``data`` scalars to plot the data against
+        :target: column of ``data``, plotted rightmost and used to color the plot
+    
+    Example:
+
+    .. literalinclude:: ../../examples/parallel.py
+
+    .. image:: ../../examples/images/parallel.png
+        :width: 600
+    
+    """ 
     def __init__(self, data, groups, target):
         super(ScalarsParallelCoordinates, self).__init__(data)
         self.target = target
@@ -25,6 +41,16 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         ax.set_yticklabels(tick_labels)
 
     def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues"):
+        r"""
+        Plot the parallel coordinates chart
+
+        Args:
+            :axes: List of :mod:`matplotlib` axes to plot to (you must use the same number of axes and groups)
+            :ticks: Number of ticks to show in the axes (Default: 6)
+            :cmap: :mod:`matplotlib` colormap to use (Default: "Blues")
+            :adjust_withspaces: Call ``plt.subplots_adjust(wspace=0)`` to make the plot prettier (can have side-effects) (Default: ``True``)
+
+        """
         assert len(axes) == len(self.groups) - 1, "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups) - 1)
         
         self.norm_df = self.data.scalars.copy()
