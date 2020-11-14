@@ -20,7 +20,6 @@ docs:
 	PYTHONPATH=.. find ../examples/ -iname "*.py" -exec python {} \;
 	@make html
 	cp -r build/html/ ../docs
-	touch ../docs/.nojekyll
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
