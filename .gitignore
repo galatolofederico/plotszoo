@@ -7,3 +7,5 @@ __pycache__/
 
 sphinx-docs/build/*
 !sphinx-docs/build/.gitkeep
+
+/.vscode
