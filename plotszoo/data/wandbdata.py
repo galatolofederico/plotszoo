@@ -6,6 +6,17 @@ import os
 from plotszoo.data import DataCollection
 
 class WandbData(DataCollection):
+    r"""
+    Retrive scalars and time series from `wandb <https://www.wandb.com/>`_.
+
+    Args:
+        :username: ``wandb`` username
+        :project:  ``wandb`` project
+        :query: MongoDB query for `wandb` (check `here <https://docs.wandb.com/ref/export-api>`_.)
+        :cache: Cache retrived data (Default: ``True``)
+        :cache_dir: Directory to cache the data to (Default: ``./.plotszoo-wandb-cache``)
+        :force_update: Force cache update (Default: ``False``)
+    """
     def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False):
         try:
             import wandb
@@ -26,8 +37,15 @@ class WandbData(DataCollection):
 
         self.id = hashlib.sha256(("%s/%s/%s" % (self.username, self.project, self.query)).encode()).hexdigest()
         self.cache_file = os.path.join(self.cache_dir, self.id+".json")
-        
+    
     def pull_scalars(self, state="finished"):
+        r"""
+        Pull scalars from ``wandb``
+
+        Args:
+            :state: Filter the runs using their ``state``,  ``None`` to disable (Default: "finished")
+        """
+
         assert len(self.data_types) == 0, "You can pull the data once for each data object"
         import wandb
         api = wandb.Api()
@@ -72,6 +90,9 @@ class WandbData(DataCollection):
 
 
     def pull_series(self):
+        r"""
+        Pull series from ``wandb``
+        """
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
         import wandb
         api = wandb.Api()
