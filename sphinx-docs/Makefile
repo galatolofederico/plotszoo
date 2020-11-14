@@ -15,6 +15,8 @@ help:
 .PHONY: help Makefile
 
 docs:
+	#sphinx-apidoc -f -o source/ ../plotszoo
+	@make clean
 	@make html
 	rm -rf ../docs
 	cp -r build/html/ ../docs
