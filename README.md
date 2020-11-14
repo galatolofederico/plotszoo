@@ -1,7 +1,7 @@
 # plotszoo
 
 
-**[Documentation]()**
+**[Documentation](https://galatolofederico.github.io/plotszoo/)**
 
 
 This repository contains a collection of classes to easily make some common plots as well as retrieving data from multiple sources.
