@@ -15,9 +15,9 @@ class ScalarsParallelCoordinates(ScalarsPlot):
     
     Example:
 
-    .. literalinclude:: ../../examples/parallel.py
+    .. literalinclude:: ../../examples/ScalarsParallelCoordinates.py
 
-    .. image:: ../../examples/images/parallel.png
+    .. image:: ../../examples/images/ScalarsParallelCoordinates.png
         :width: 600
     
     """ 
