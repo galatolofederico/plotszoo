@@ -84,6 +84,19 @@ class DataCollection:
             for null_index in null_indices:
                 del self.series[null_index]
 
+    def are_series_aligned(self):
+        r"""
+        Returns ``True`` if all series share the same indices
+        """
+        assert self.is_series(), "You must have series to check for alignment"
+        index = None
+        for k, s in self.series.items():
+            if index is None: index = s.index
+            if not (s.index == index).all():
+                return False
+        return True
+
+
     def is_scalars(self):
         r"""
         Returns ``True`` if the :class:`DataCollection` contains scalars
