@@ -45,6 +45,7 @@ class DataCollection:
                     raise Exception("Index %s not present in series but present in scalars" % (index, ))
 
         self.series = series.copy()
+        self.data_types.append("series")
 
     def create_scalar_from_series(self, scalar_name, agg_fn):
         r"""
