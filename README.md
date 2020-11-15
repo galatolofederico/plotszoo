@@ -38,7 +38,7 @@ fig.set_size_inches(30, 10)
 plt.show()
 ```
 
-![parallel.png](./examples/images/parallel.png)
+![parallel.png](./examples/images/ScalarsParallelCoordinates.png)
 
 
 ## Contributions and license
