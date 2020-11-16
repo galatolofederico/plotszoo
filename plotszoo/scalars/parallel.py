@@ -24,7 +24,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
     def __init__(self, data, groups, target):
         super(ScalarsParallelCoordinates, self).__init__(data)
         self.target = target
-        self.groups = groups
+        self.groups = groups.copy()
 
         self.groups.append(self.target)
 
