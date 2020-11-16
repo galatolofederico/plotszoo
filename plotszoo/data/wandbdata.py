@@ -16,8 +16,9 @@ class WandbData(DataCollection):
         :cache: Cache retrived data (Default: ``True``)
         :cache_dir: Directory to cache the data to (Default: ``./.plotszoo-wandb-cache``)
         :force_update: Force cache update (Default: ``False``)
+        :verbose: Be verbose about pulling and caching (Default: ``True``)
     """
-    def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False):
+    def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False, verbose=True):
         try:
             import wandb
         except:
@@ -34,6 +35,7 @@ class WandbData(DataCollection):
         self.cache = cache
         self.cache_dir = cache_dir
         self.force_update = force_update
+        self.verbose = verbose
 
         self.id = hashlib.sha256(("%s/%s/%s" % (self.username, self.project, self.query)).encode()).hexdigest()
         self.cache_file = os.path.join(self.cache_dir, self.id+".json")
@@ -52,10 +54,10 @@ class WandbData(DataCollection):
 
         self.runs = None
         if self.cache and os.path.exists(self.cache_file) and not self.force_update:
-            print("[!] Using cache file %s" % (self.cache_file, ))
+            if self.verbose: print("[!] Using cache file %s" % (self.cache_file, ))
             self.runs = json.load(open(self.cache_file, "r"))
         else:
-            print("[!] Pulling data from wandb")
+            if self.verbose: print("[!] Pulling data from wandb")
             wandb_runs = api.runs("%s/%s" % (self.username, self.project), json.loads(self.query))
             self.runs = []
             for wandb_run in wandb_runs:
@@ -70,7 +72,7 @@ class WandbData(DataCollection):
             if self.cache:
                 if not os.path.isdir(self.cache_dir): os.mkdir(self.cache_dir)
                 if not os.path.isfile(self.cache_file) or self.force_update:
-                    print("[!] Saving cache file %s" % (self.cache_file, ))
+                    if self.verbose: print("[!] Saving cache file %s" % (self.cache_file, ))
                     json.dump(self.runs, open(self.cache_file, "w"))
 
         one_level_runs = []
@@ -102,14 +104,14 @@ class WandbData(DataCollection):
             cache_file = os.path.join(self.cache_dir, run["id"]+".csv")
             series_df = None
             if self.cache and os.path.exists(cache_file) and not self.force_update:
-                print("[!] Using cache file %s" % (cache_file, ))
+                if self.verbose: print("[!] Using cache file %s" % (cache_file, ))
                 series_df = pd.read_csv(cache_file)
             else:
-                print("[!] Pulling data from wandb for run_id=%s" % (run["id"], ))
+                if self.verbose: print("[!] Pulling data from wandb for run_id=%s" % (run["id"], ))
                 wandb_run = api.run("%s/%s/%s" % (self.username, self.project, run["id"]))
                 series_df = wandb_run.history()
                 if self.cache:
-                    print("[!] Writing cache file %s" % (cache_file, ))
+                    if self.verbose: print("[!] Writing cache file %s" % (cache_file, ))
                     series_df.to_csv(cache_file)
             self.series[index] = series_df
         
