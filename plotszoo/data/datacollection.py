@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class DataCollection:
     r"""
@@ -55,7 +56,7 @@ class DataCollection:
             :scalar_name: The name of the new scalar
             :agg_fn: Function to be called to the corresponding time series to create the scalar
 
-        Example::
+        Example:
 
             >>> data.create_scalar_from_series("start_time", lambda s: s["timestamp"].min())
 
@@ -84,13 +85,20 @@ class DataCollection:
             for null_index in null_indices:
                 del self.series[null_index]
     
-    def align_series(self, to="longest", fill=float("NaN")):
+    def align_series(self, to="longest", **kwargs):
         r"""
         Algin series to the longest or shortest one.
 
+        Chooses the new index and `reindex` all the series 
+
         Args:
             :to: alignment strategy (one of ``longest`` or ``shortest``) (Default: ``longest``)
-            :fill: filling value to use (Default: ``NaN``)
+            :**kwargs: keyword arguments for :mod:`pandas` `reindex`
+
+        Examples:
+
+            >>>  data.align_series(to="longest", method="nearest")
+
         """
         assert not self.are_series_aligned(), "Series have to be unaligned"
         assert self.is_series(), "DataCollection must have series"
@@ -106,9 +114,29 @@ class DataCollection:
                 new_index = series.index
         
         for key, series in self.series.items():
-            self.series[key] = series.reindex(new_index, fill_value=fill)
+            self.series[key] = series.reindex(new_index, **kwargs)
         
         assert self.are_series_aligned()
+
+    def series_rolling(self, column, new_column, fn="mean", **kwargs):
+        assert self.is_series(), "DataCollection must have series"
+
+        for key, series in self.series.items():
+            rolling = series[column].rolling(**kwargs)
+            series[new_column] = getattr(rolling, fn)()
+    
+
+    def create_categorical(self, column, new_column):
+        r"""
+        Creates a new categorical column (0, 1, 2, ...) from a textual one ("sin", "cos", "tan", ..-)
+
+        Args:
+            :column: Column to use as input
+            :new_column: Name of the new categorical column
+        """
+        assert self.is_scalars(), "DataCollection must have scalars"
+        values = np.unique(self.scalars[column]).tolist()
+        self.scalars[new_column] = self.scalars[column].apply(lambda s: values.index(s))
 
     def are_series_aligned(self):
         r"""
