@@ -92,7 +92,7 @@ class DataCollection:
         index = None
         for k, s in self.series.items():
             if index is None: index = s.index
-            if not (s.index == index).all():
+            if len(s.index) != len(index) or not (s.index == index).all():
                 return False
         return True
 
