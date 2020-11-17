@@ -27,7 +27,7 @@ class GroupedSeriesParade(SeriesPlot):
         self.groups = groups
         self.target = target
     
-    def plot(self, ax, cmap="tab10", alpha=0.5):
+    def plot(self, ax, cmap="tab10", alpha=0.5, goal=None, goal_type="max"):
         r"""
         Plot the grouped series parade
 
@@ -35,6 +35,8 @@ class GroupedSeriesParade(SeriesPlot):
             :ax: :mod:`matplotlib` axes to plot to
             :cmap: :mod:`matplotlib` colormap to use (Default: ``tab10``)
             :alpha: Alpha for the confidence intervals area
+            :goal: Stop plotting after a certain goal is reached for each series (Default ``None``)
+            :goal_type: The goal type (``max`` or ``min``)
         """
         assert self.data.is_both(), "This plot requires both scalars and series"
         assert self.data.are_series_aligned(), "Series must be aligned"
@@ -60,11 +62,21 @@ class GroupedSeriesParade(SeriesPlot):
         
         groups = list(toplot.keys())
         cmap = matplotlib.cm.get_cmap(cmap)
-        norm = matplotlib.colors.Normalize(vmin=0, vmax=len(groups)-1)
+        norm = matplotlib.colors.Normalize(vmin=0, vmax=len(groups)-1)   
 
         for i, group in enumerate(groups):
             mean = np.array([tp["mean"] for tp in toplot[group]])
             ci = np.array([tp["ci"][0] for tp in toplot[group]])
+
+            if goal is not None:
+                assert goal_type in ["min", "max"]
+                if goal_type == "min":
+                    goal_x = np.argmax(mean <= goal)
+                elif goal_type == "max":
+                    goal_x = np.argmax(mean >= goal)
+                
+                mean[goal_x+1:] = float("NaN")
+                ci[goal_x+1:] = float("NaN")
             
             ax.plot(index, mean, c=cmap(norm(i)))
             ax.fill_between(index, mean+ci, mean-ci, color=cmap(norm(i)), alpha=alpha)
