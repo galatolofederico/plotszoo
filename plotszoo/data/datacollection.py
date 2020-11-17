@@ -85,6 +85,33 @@ class DataCollection:
             for null_index in null_indices:
                 del self.series[null_index]
     
+    def fillna_series(self, column, value=0):
+        r"""
+        Sobsitute ``NaN`` values from the series with a new one
+
+        Args:
+            :column: Series column to fill
+            :value: Value to use (Default: 0)
+        """
+        assert self.is_series(), "DataCollection must have series"
+        
+        for key, series in self.series.items():
+            series[column] = series[column].fillna(value)
+    
+    def dropna_series(self, columns):
+        r"""
+        Drop all the rows where column in ``NaN`` in series. Will probably unalign the series
+
+        Args:
+            :columns: Columns to check for ``NaN``
+        """
+        assert self.is_series(), "DataCollection must have series"
+        
+        for key, series in self.series.items():
+            null_indices = series.index[pd.isnull(series[columns]).any(1)].tolist()
+            self.series[key] = series.drop(null_indices)
+
+
     def align_series(self, to="longest", **kwargs):
         r"""
         Algin series to the longest or shortest one.
@@ -113,12 +140,13 @@ class DataCollection:
             ):
                 new_index = series.index
         
+        new_index = list(range(0, len(new_index)))
         for key, series in self.series.items():
             self.series[key] = series.reindex(new_index, **kwargs)
         
         assert self.are_series_aligned()
 
-    def series_rolling(self, column, new_column, fn="mean", **kwargs):
+    def rolling_series(self, column, new_column, fn="mean", **kwargs):
         assert self.is_series(), "DataCollection must have series"
 
         for key, series in self.series.items():
