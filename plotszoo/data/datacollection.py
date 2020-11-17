@@ -116,14 +116,13 @@ class DataCollection:
         r"""
         Algin series to the longest or shortest one.
 
-        Chooses the new index and `reindex` all the series 
+        Chooses the new index and ``reindex`` all the series 
 
         Args:
             :to: alignment strategy (one of ``longest`` or ``shortest``) (Default: ``longest``)
-            :**kwargs: keyword arguments for :mod:`pandas` `reindex`
+            :\*\*kwargs: keyword arguments for :mod:`pandas` `reindex`
 
-        Examples:
-
+        Examples::
             >>>  data.align_series(to="longest", method="nearest")
 
         """
