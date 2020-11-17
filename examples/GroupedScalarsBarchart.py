@@ -19,4 +19,4 @@ for feature, ax in zip(iris["feature_names"], axes.flatten()):
     barchart.plot(ax, title=feature, nbins=20, grid=True, yticks_fn=yticks_fn)
 
 fig.set_size_inches(20, 10)
-plt.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/GroupedScalarsBarchart.png"))
+fig.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/GroupedScalarsBarchart.png"))

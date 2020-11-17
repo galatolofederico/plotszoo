@@ -11,10 +11,10 @@ pdf = pd.DataFrame(norm.pdf(x)/norm.pdf(x).sum(), columns=["pdf"])
 data = plotszoo.data.DataCollection()
 data.set_scalars(pdf)
 
-fix, ax = plt.subplots()
+fig, ax = plt.subplots()
 
 scatter_cumulative = plotszoo.scalars.ScalarsScatterCumulative(data, x=None, y="pdf", cumulative_fn=np.sum)
 
 scatter_cumulative.plot(ax)
 
-plt.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/ScalarsScatterCumulative.png"))
+fig.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/ScalarsScatterCumulative.png"))

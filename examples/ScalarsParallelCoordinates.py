@@ -19,4 +19,4 @@ parallel_plot = plotszoo.scalars.ScalarsParallelCoordinates(data, iris["feature_
 parallel_plot.plot(axes, cmap="tab10")
 
 fig.set_size_inches(20, 10)
-plt.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/ScalarsParallelCoordinates.png"))
+fig.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/ScalarsParallelCoordinates.png"))
