@@ -78,6 +78,6 @@ class GroupedSeriesParade(SeriesPlot):
                 mean[goal_x+1:] = float("NaN")
                 ci[goal_x+1:] = float("NaN")
             
-            ax.plot(index, mean, c=cmap(norm(i)))
+            ax.plot(index, mean, c=cmap(norm(i)), label=group)
             ax.fill_between(index, mean+ci, mean-ci, color=cmap(norm(i)), alpha=alpha)
         
