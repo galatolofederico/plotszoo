@@ -12,6 +12,7 @@ Here you can find all the information needed to get started and start plotting w
    data
    scalars
    series
+   utils
 
 
 Indices and tables
