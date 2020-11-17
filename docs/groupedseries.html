@@ -188,6 +188,8 @@ This plot requires both scalars and series and requires aligned series</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">plotszoo</span>
 
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
 <span class="n">num_series</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">samples</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.8</span>
@@ -206,19 +208,19 @@ This plot requires both scalars and series and requires aligned series</p>
 <span class="n">data</span><span class="o">.</span><span class="n">set_scalars</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]))</span>
 <span class="n">data</span><span class="o">.</span><span class="n">set_series</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">series_parade</span> <span class="o">=</span> <span class="n">plotszoo</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">GroupedSeriesParade</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
 
 <span class="n">series_parade</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;images/GroupedSeriesParade.png&quot;</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;images/GroupedSeriesParade.png&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/GroupedSeriesParade.png"><img alt="_images/GroupedSeriesParade.png" src="_images/GroupedSeriesParade.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt id="plotszoo.series.grouped.GroupedSeriesParade.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'tab10'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.series.grouped.GroupedSeriesParade.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'tab10'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">goal</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">goal_type</span><span class="o">=</span><span class="default_value">'max'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.series.grouped.GroupedSeriesParade.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the grouped series parade</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="field-list simple">
@@ -230,6 +232,12 @@ This plot requires both scalars and series and requires aligned series</p>
 </dd>
 <dt class="field-odd">alpha</dt>
 <dd class="field-odd"><p>Alpha for the confidence intervals area</p>
+</dd>
+<dt class="field-even">goal</dt>
+<dd class="field-even"><p>Stop plotting after a certain goal is reached for each series (Default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p>
+</dd>
+<dt class="field-odd">goal_type</dt>
+<dd class="field-odd"><p>The goal type (<code class="docutils literal notranslate"><span class="pre">max</span></code> or <code class="docutils literal notranslate"><span class="pre">min</span></code>)</p>
 </dd>
 </dl>
 </dd>

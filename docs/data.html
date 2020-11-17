@@ -178,9 +178,48 @@
 </dd>
 </dl>
 <dl class="py method">
+<dt id="plotszoo.data.DataCollection.align_series">
+<code class="sig-name descname">align_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to</span><span class="o">=</span><span class="default_value">'longest'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.align_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Algin series to the longest or shortest one.</p>
+<p>Chooses the new index and <code class="docutils literal notranslate"><span class="pre">reindex</span></code> all the series</p>
+<dl>
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">to</dt>
+<dd class="field-odd"><p>alignment strategy (one of <code class="docutils literal notranslate"><span class="pre">longest</span></code> or <code class="docutils literal notranslate"><span class="pre">shortest</span></code>) (Default: <code class="docutils literal notranslate"><span class="pre">longest</span></code>)</p>
+</dd>
+<dt class="field-even">**kwargs</dt>
+<dd class="field-even"><p>keyword arguments for <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code> <cite>reindex</cite></p>
+</dd>
+</dl>
+</dd>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">data</span><span class="o">.</span><span class="n">align_series</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s2">&quot;longest&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="plotszoo.data.DataCollection.are_series_aligned">
 <code class="sig-name descname">are_series_aligned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.are_series_aligned" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if all series share the same indices</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plotszoo.data.DataCollection.create_categorical">
+<code class="sig-name descname">create_categorical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">new_column</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.create_categorical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new categorical column (0, 1, 2, …) from a textual one (“sin”, “cos”, “tan”, ..-)</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">column</dt>
+<dd class="field-odd"><p>Column to use as input</p>
+</dd>
+<dt class="field-even">new_column</dt>
+<dd class="field-even"><p>Name of the new categorical column</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -199,7 +238,7 @@
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">create_scalar_from_series</span><span class="p">(</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">create_scalar_from_series</span><span class="p">(</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -212,6 +251,37 @@
 <dt>Args:</dt><dd><dl class="field-list simple">
 <dt class="field-odd">columns</dt>
 <dd class="field-odd"><p>Columns to check for <code class="docutils literal notranslate"><span class="pre">NaN</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plotszoo.data.DataCollection.dropna_series">
+<code class="sig-name descname">dropna_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.dropna_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop all the rows where column in <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in series. Will probably unalign the series</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">columns</dt>
+<dd class="field-odd"><p>Columns to check for <code class="docutils literal notranslate"><span class="pre">NaN</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plotszoo.data.DataCollection.fillna_series">
+<code class="sig-name descname">fillna_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.fillna_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sobsitute <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values from the series with a new one</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">column</dt>
+<dd class="field-odd"><p>Series column to fill</p>
+</dd>
+<dt class="field-even">value</dt>
+<dd class="field-even"><p>Value to use (Default: 0)</p>
 </dd>
 </dl>
 </dd>
