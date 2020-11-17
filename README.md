@@ -14,7 +14,7 @@ Feel free to use submit your own plots, bugfixes, requests or ideas. Any PR is v
 
 ## Example
 
-```
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
