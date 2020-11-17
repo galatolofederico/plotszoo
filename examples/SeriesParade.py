@@ -4,6 +4,8 @@ import os
 import matplotlib.pyplot as plt
 import plotszoo
 
+np.random.seed(0)
+
 num_series = 10
 samples = 100
 noise_level = 0.8
