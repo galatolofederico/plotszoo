@@ -83,6 +83,32 @@ class DataCollection:
         if self.is_series():
             for null_index in null_indices:
                 del self.series[null_index]
+    
+    def align_series(self, to="longest", fill=float("NaN")):
+        r"""
+        Algin series to the longest or shortest one.
+
+        Args:
+            :to: alignment strategy (one of ``longest`` or ``shortest``) (Default: ``longest``)
+            :fill: filling value to use (Default: ``NaN``)
+        """
+        assert not self.are_series_aligned(), "Series have to be unaligned"
+        assert self.is_series(), "DataCollection must have series"
+        assert to in ["longest", "shortest"], "to must be 'longest' or 'shortest'"
+
+        new_index = None
+        for key, series in self.series.items():
+            if (
+                new_index is None
+                or (to == "longest" and len(series.index) > len(new_index))
+                or (to == "shortest" and len(series.index) < len(new_index))
+            ):
+                new_index = series.index
+        
+        for key, series in self.series.items():
+            self.series[key] = series.reindex(new_index, fill_value=fill)
+        
+        assert self.are_series_aligned()
 
     def are_series_aligned(self):
         r"""
