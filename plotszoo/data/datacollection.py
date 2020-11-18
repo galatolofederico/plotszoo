@@ -121,7 +121,7 @@ class DataCollection:
             :to: alignment strategy (one of ``longest`` or ``shortest``) (Default: ``longest``)
             :\*\*kwargs: keyword arguments for :mod:`pandas` `reindex`
 
-        Examples::
+        Example::
             >>>  data.align_series(to="longest", method="nearest")
 
         """
@@ -146,7 +146,18 @@ class DataCollection:
         assert self.are_series_aligned()
 
     def rolling_series(self, column, new_column, fn="mean", **kwargs):
-        #TODO: write docs
+        r"""
+        Apply :mod:`pandas` rolling function to all the series
+
+        Args:
+            :column: Series column to apply the rolling to
+            :new_column: Series column in which store the rolling function results
+            :fn: :mod:`pandas` rolling function, for example ``"mean"` means ``series[column].rolling().mean()``
+            :\*\*kwargs: Keyword arguments for the :mod:`pandas` rolling function
+        
+        Example::
+            >>> data.rolling_series("reward", "mean_reward", window=20, fn="mean")
+        """
         assert self.is_series(), "DataCollection must have series"
 
         for key, series in self.series.items():
