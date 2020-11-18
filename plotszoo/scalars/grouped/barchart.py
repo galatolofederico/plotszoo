@@ -36,6 +36,10 @@ class GroupedScalarsBarchart(ScalarsPlot):
             :nbins: Number of ticks in the x axis (Default: 10)
             :grid: Show vertical grid lines (Default: ``False``)
             :yticks_fn: A function to convert each index to text (Default: ``None``)
+        
+        Returns:
+            Grouped scalars :mod:`pandas` DataFrame
+        
         """
         self.grouped_scalars[self.target]["mean"].plot.barh(ax=ax, xerr=self.grouped_scalars[self.target]["confidence_interval"], capsize=4, xlabel="")
         if title is not None: ax.title.set_text(title)
@@ -44,3 +48,5 @@ class GroupedScalarsBarchart(ScalarsPlot):
             ax.set_yticklabels(xticks)
         ax.locator_params(nbins=nbins, axis="x")
         if grid: ax.grid(which="both", axis="x", linestyle="--")
+
+        return self.grouped_scalars
