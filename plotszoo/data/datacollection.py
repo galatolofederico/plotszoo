@@ -111,12 +111,11 @@ class DataCollection:
             null_indices = series.index[pd.isnull(series[columns]).any(1)].tolist()
             self.series[key] = series.drop(null_indices)
 
-
     def align_series(self, to="longest", **kwargs):
         r"""
         Algin series to the longest or shortest one.
 
-        Chooses the new index and ``reindex`` all the series 
+        Reset all the series indices, chooses the new index according to the strategy and ``reindex`` all the series 
 
         Args:
             :to: alignment strategy (one of ``longest`` or ``shortest``) (Default: ``longest``)
@@ -132,6 +131,7 @@ class DataCollection:
 
         new_index = None
         for key, series in self.series.items():
+            self.series[key] = series.reset_index(drop=True)
             if (
                 new_index is None
                 or (to == "longest" and len(series.index) > len(new_index))
@@ -146,6 +146,7 @@ class DataCollection:
         assert self.are_series_aligned()
 
     def rolling_series(self, column, new_column, fn="mean", **kwargs):
+        #TODO: write docs
         assert self.is_series(), "DataCollection must have series"
 
         for key, series in self.series.items():
