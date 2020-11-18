@@ -27,13 +27,14 @@ class GroupedSeriesParade(SeriesPlot):
         self.groups = groups
         self.target = target
     
-    def plot(self, ax, cmap="tab10", alpha=0.5, goal=None, goal_type="max"):
+    def plot(self, ax, cmap="tab10", normalize_color=False, alpha=0.5, goal=None, goal_type="max"):
         r"""
         Plot the grouped series parade
 
         Args:
             :ax: :mod:`matplotlib` axes to plot to
             :cmap: :mod:`matplotlib` colormap to use (Default: ``tab10``)
+            :normalize_color: Call :mod:`matplotlib` before using colormap (Default: ``False``)
             :alpha: Alpha for the confidence intervals area
             :goal: Stop plotting after a certain goal is reached for each series (Default ``None``)
             :goal_type: The goal type (``max`` or ``min``)
@@ -78,6 +79,10 @@ class GroupedSeriesParade(SeriesPlot):
                 mean[goal_x+1:] = float("NaN")
                 ci[goal_x+1:] = float("NaN")
             
-            ax.plot(index, mean, c=cmap(norm(i)), label=group)
-            ax.fill_between(index, mean+ci, mean-ci, color=cmap(norm(i)), alpha=alpha)
+            if normalize_color:
+                color = cmap(norm(i))
+            else:
+                color = cmap(i)
+            ax.plot(index, mean, c=color, label=group)
+            ax.fill_between(index, mean+ci, mean-ci, color=color, alpha=alpha)
         

@@ -220,7 +220,7 @@ This plot requires both scalars and series and requires aligned series</p>
 <a class="reference internal image-reference" href="_images/GroupedSeriesParade.png"><img alt="_images/GroupedSeriesParade.png" src="_images/GroupedSeriesParade.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt id="plotszoo.series.grouped.GroupedSeriesParade.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'tab10'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">goal</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">goal_type</span><span class="o">=</span><span class="default_value">'max'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.series.grouped.GroupedSeriesParade.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'tab10'</span></em>, <em class="sig-param"><span class="n">normalize_color</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">goal</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">goal_type</span><span class="o">=</span><span class="default_value">'max'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.series.grouped.GroupedSeriesParade.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the grouped series parade</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="field-list simple">
@@ -230,14 +230,17 @@ This plot requires both scalars and series and requires aligned series</p>
 <dt class="field-even">cmap</dt>
 <dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> colormap to use (Default: <code class="docutils literal notranslate"><span class="pre">tab10</span></code>)</p>
 </dd>
-<dt class="field-odd">alpha</dt>
-<dd class="field-odd"><p>Alpha for the confidence intervals area</p>
+<dt class="field-odd">normalize_color</dt>
+<dd class="field-odd"><p>Call <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> before using colormap (Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p>
 </dd>
-<dt class="field-even">goal</dt>
-<dd class="field-even"><p>Stop plotting after a certain goal is reached for each series (Default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p>
+<dt class="field-even">alpha</dt>
+<dd class="field-even"><p>Alpha for the confidence intervals area</p>
 </dd>
-<dt class="field-odd">goal_type</dt>
-<dd class="field-odd"><p>The goal type (<code class="docutils literal notranslate"><span class="pre">max</span></code> or <code class="docutils literal notranslate"><span class="pre">min</span></code>)</p>
+<dt class="field-odd">goal</dt>
+<dd class="field-odd"><p>Stop plotting after a certain goal is reached for each series (Default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p>
+</dd>
+<dt class="field-even">goal_type</dt>
+<dd class="field-even"><p>The goal type (<code class="docutils literal notranslate"><span class="pre">max</span></code> or <code class="docutils literal notranslate"><span class="pre">min</span></code>)</p>
 </dd>
 </dl>
 </dd>
