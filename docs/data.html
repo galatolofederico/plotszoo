@@ -181,7 +181,7 @@
 <dt id="plotszoo.data.DataCollection.align_series">
 <code class="sig-name descname">align_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to</span><span class="o">=</span><span class="default_value">'longest'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.align_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Algin series to the longest or shortest one.</p>
-<p>Chooses the new index and <code class="docutils literal notranslate"><span class="pre">reindex</span></code> all the series</p>
+<p>Reset all the series indices, chooses the new index according to the strategy and <code class="docutils literal notranslate"><span class="pre">reindex</span></code> all the series</p>
 <dl>
 <dt>Args:</dt><dd><dl class="field-list simple">
 <dt class="field-odd">to</dt>
@@ -192,7 +192,7 @@
 </dd>
 </dl>
 </dd>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">data</span><span class="o">.</span><span class="n">align_series</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s2">&quot;longest&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">data</span><span class="o">.</span><span class="n">align_series</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s2">&quot;longest&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
@@ -310,6 +310,33 @@
 <dt id="plotszoo.data.DataCollection.is_series">
 <code class="sig-name descname">is_series</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.is_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the <a class="reference internal" href="#plotszoo.data.DataCollection" title="plotszoo.data.DataCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataCollection</span></code></a> contains time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plotszoo.data.DataCollection.rolling_series">
+<code class="sig-name descname">rolling_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">new_column</span></em>, <em class="sig-param"><span class="n">fn</span><span class="o">=</span><span class="default_value">'mean'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.rolling_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code> rolling function to all the series</p>
+<dl>
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">column</dt>
+<dd class="field-odd"><p>Series column to apply the rolling to</p>
+</dd>
+<dt class="field-even">new_column</dt>
+<dd class="field-even"><p>Series column in which store the rolling function results</p>
+</dd>
+<dt class="field-odd">fn</dt>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code> rolling function, for example <code class="docutils literal notranslate"><span class="pre">&quot;mean&quot;`</span> <span class="pre">means</span> <span class="pre">``series[column].rolling().mean()</span></code></p>
+</dd>
+<dt class="field-even">**kwargs</dt>
+<dd class="field-even"><p>Keyword arguments for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code> rolling function</p>
+</dd>
+</dl>
+</dd>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">rolling_series</span><span class="p">(</span><span class="s2">&quot;reward&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_reward&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
