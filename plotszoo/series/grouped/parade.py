@@ -41,48 +41,36 @@ class GroupedSeriesParade(SeriesPlot):
         """
         assert self.data.is_both(), "This plot requires both scalars and series"
         assert self.data.are_series_aligned(), "Series must be aligned"
-        index = self.data.series[next(iter(self.data.series.keys()))].index
+
         groups_df = self.data.scalars.groupby(self.groups)
         grouped_series = dict()
+
         for key, group in groups_df.groups.items():
             grouped_series[key] = list()
-            for elem in group:
-                grouped_series[key].append(self.data.series[elem][self.target])
+            for elem in group: grouped_series[key].append(self.data.series[elem][self.target])
+            grouped_series[key] = pd.DataFrame(grouped_series[key]).T
+            grouped_series[key] = grouped_series[key].agg([np.mean, confidence_interval], axis="columns")
         
-        toplot = dict()
-        for key, group in grouped_series.items():
-            toplot[key] = list()
-            for i in index:
-                val = list()
-                for series in group:
-                    val.append(series[i])
-                toplot[key].append(dict(
-                    mean=np.mean(val), 
-                    ci=confidence_interval(pd.DataFrame(val))
-                ))
-        
-        groups = list(toplot.keys())
         cmap = matplotlib.cm.get_cmap(cmap)
-        norm = matplotlib.colors.Normalize(vmin=0, vmax=len(groups)-1)   
+        norm = matplotlib.colors.Normalize(vmin=0, vmax=len(grouped_series)-1)
 
-        for i, group in enumerate(groups):
-            mean = np.array([tp["mean"] for tp in toplot[group]])
-            ci = np.array([tp["ci"][0] for tp in toplot[group]])
-
+        for i, (group, series) in enumerate(grouped_series.items()):
             if goal is not None:
                 assert goal_type in ["min", "max"]
                 if goal_type == "min":
-                    goal_x = np.argmax(mean <= goal)
+                    goal_x = np.argmax(series["mean"] <= goal)
                 elif goal_type == "max":
-                    goal_x = np.argmax(mean >= goal)
+                    goal_x = np.argmax(series["mean"] >= goal)
                 
-                mean[goal_x+1:] = float("NaN")
-                ci[goal_x+1:] = float("NaN")
-            
+                series["mean"][goal_x+1:] = float("NaN")
+                series["confidence_interval"][goal_x+1:] = float("NaN")
+                
             if normalize_color:
                 color = cmap(norm(i))
             else:
                 color = cmap(i)
-            ax.plot(index, mean, c=color, label=group)
-            ax.fill_between(index, mean+ci, mean-ci, color=color, alpha=alpha)
+            
+            ax.plot(series.index, series["mean"], c=color, label=group)
+            ax.fill_between(series.index, series["mean"]+series["confidence_interval"], series["mean"]-series["confidence_interval"], color=color, alpha=alpha)
         
+        return grouped_series
