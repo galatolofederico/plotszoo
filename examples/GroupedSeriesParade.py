@@ -29,5 +29,6 @@ fig, ax = plt.subplots()
 series_parade = plotszoo.series.grouped.GroupedSeriesParade(data, ["type"], "value")
 
 series_parade.plot(ax)
+ax.legend(loc="lower right")
 
 fig.savefig(os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/GroupedSeriesParade.png"))
