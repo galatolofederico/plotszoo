@@ -91,9 +91,12 @@ class WandbData(DataCollection):
         self.scalars = pd.DataFrame(one_level_runs)
 
 
-    def pull_series(self):
+    def pull_series(self, scan_history=True):
         r"""
         Pull series from ``wandb``
+
+        Args:
+            :scan_history: Use wandb.Api.run.scan_history to pull the full history (Default: ``True``)
         """
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
         import wandb
@@ -101,7 +104,7 @@ class WandbData(DataCollection):
         
         self.series = {}
         for index, run in self.scalars.iterrows():
-            cache_file = os.path.join(self.cache_dir, run["id"]+".csv")
+            cache_file = os.path.join(self.cache_dir, run["id"]+("_full" if scan_history else "")+".csv")
             series_df = None
             if self.cache and os.path.exists(cache_file) and not self.force_update:
                 if self.verbose: print("[!] Using cache file %s" % (cache_file, ))
@@ -109,7 +112,13 @@ class WandbData(DataCollection):
             else:
                 if self.verbose: print("[!] Pulling data from wandb for run_id=%s" % (run["id"], ))
                 wandb_run = api.run("%s/%s/%s" % (self.username, self.project, run["id"]))
-                series_df = wandb_run.history()
+                if scan_history:
+                    history = wandb_run.scan_history()
+                    series_df = list()
+                    for elem in history: series_df.append(elem)
+                    series_df = pd.DataFrame(series_df)
+                else:
+                    series_df = wandb_run.history()
                 if self.cache:
                     if self.verbose: print("[!] Writing cache file %s" % (cache_file, ))
                     series_df.to_csv(cache_file)
