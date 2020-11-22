@@ -85,6 +85,16 @@ class DataCollection:
             for null_index in null_indices:
                 del self.series[null_index]
     
+    def fillna(self, column, value=0):
+        r"""
+        Sobsitute ``NaN`` values from the scalars
+
+        Args:
+            :column: Column to check for ``NaN``
+        """
+        self.scalars[column] = self.scalars[column].fillna(value)
+        
+    
     def fillna_series(self, column, value=0):
         r"""
         Sobsitute ``NaN`` values from the series with a new one
