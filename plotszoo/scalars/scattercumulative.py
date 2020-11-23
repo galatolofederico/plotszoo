@@ -26,13 +26,15 @@ class ScalarsScatterCumulative(ScalarsPlot):
         self.y = y
         self.cumulative_fn = cumulative_fn
 
-    def plot(self, ax, sort=False):
+    def plot(self, ax, sort=False, scatter=True, label=None):
         r"""
         Plot the cumulative scatter plot
 
         Args:
             :ax: :mod:`matplotlib` ax to plot to
             :sort: Sort the x data (Default: ``False``)
+            :scatter: Scatter-plot the data points (Default: ``True``) 
+            :label: Label to use to plot (Default: ``None``)
         """
         s = []
         for index, row in self.data.scalars.iterrows():
@@ -48,5 +50,7 @@ class ScalarsScatterCumulative(ScalarsPlot):
             cumulative.append(e["y"])
             e["c"] = self.cumulative_fn(cumulative)
 
-        ax.scatter([e["x"] for e in s], [e["y"] for e in s])
-        ax.plot([e["x"] for e in s], [e["c"] for e in s])
+        if scatter: ax.scatter([e["x"] for e in s], [e["y"] for e in s])
+        ax.plot([e["x"] for e in s], [e["c"] for e in s], label=label)
+    
+        return s
