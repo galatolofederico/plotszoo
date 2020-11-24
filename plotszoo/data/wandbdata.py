@@ -15,10 +15,9 @@ class WandbData(DataCollection):
         :query: MongoDB query for `wandb` (check `here <https://docs.wandb.com/ref/export-api>`_.)
         :cache: Cache retrived data (Default: ``True``)
         :cache_dir: Directory to cache the data to (Default: ``./.plotszoo-wandb-cache``)
-        :force_update: Force cache update (Default: ``False``)
         :verbose: Be verbose about pulling and caching (Default: ``True``)
     """
-    def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", force_update=False, verbose=True):
+    def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", verbose=True):
         try:
             import wandb
         except:
@@ -34,18 +33,18 @@ class WandbData(DataCollection):
         self.project = project
         self.cache = cache
         self.cache_dir = cache_dir
-        self.force_update = force_update
         self.verbose = verbose
 
         self.id = hashlib.sha256(("%s/%s/%s" % (self.username, self.project, self.query)).encode()).hexdigest()
         self.cache_file = os.path.join(self.cache_dir, self.id+".json")
     
-    def pull_scalars(self, state="finished"):
+    def pull_scalars(self, state="finished", force_update=False):
         r"""
         Pull scalars from ``wandb``
 
         Args:
             :state: Filter the runs using their ``state``,  ``None`` to disable (Default: "finished")
+            :force_update: Force cache update (Default: ``False``)
         """
 
         assert len(self.data_types) == 0, "You can pull the data once for each data object"
@@ -53,7 +52,7 @@ class WandbData(DataCollection):
         api = wandb.Api()
 
         self.runs = None
-        if self.cache and os.path.exists(self.cache_file) and not self.force_update:
+        if self.cache and os.path.exists(self.cache_file) and not force_update:
             if self.verbose: print("[!] Using cache file %s" % (self.cache_file, ))
             self.runs = json.load(open(self.cache_file, "r"))
         else:
@@ -71,7 +70,7 @@ class WandbData(DataCollection):
 
             if self.cache:
                 if not os.path.isdir(self.cache_dir): os.mkdir(self.cache_dir)
-                if not os.path.isfile(self.cache_file) or self.force_update:
+                if not os.path.isfile(self.cache_file) or force_update:
                     if self.verbose: print("[!] Saving cache file %s" % (self.cache_file, ))
                     json.dump(self.runs, open(self.cache_file, "w"))
 
@@ -91,12 +90,13 @@ class WandbData(DataCollection):
         self.scalars = pd.DataFrame(one_level_runs)
 
 
-    def pull_series(self, scan_history=True):
+    def pull_series(self, scan_history=True, force_update=False):
         r"""
         Pull series from ``wandb``
 
         Args:
             :scan_history: Use wandb.Api.run.scan_history to pull the full history (Default: ``True``)
+            :force_update: Force cache update (Default: ``False``)
         """
         assert len(self.data_types) == 1 and self.data_types[0] == "scalars", "You have to pull_scalars() before pulling the series"
         import wandb
@@ -106,7 +106,7 @@ class WandbData(DataCollection):
         for index, run in self.scalars.iterrows():
             cache_file = os.path.join(self.cache_dir, run["id"]+("_full" if scan_history else "")+".csv")
             series_df = None
-            if self.cache and os.path.exists(cache_file) and not self.force_update:
+            if self.cache and os.path.exists(cache_file) and not force_update:
                 if self.verbose: print("[!] Using cache file %s" % (cache_file, ))
                 series_df = pd.read_csv(cache_file)
             else:
