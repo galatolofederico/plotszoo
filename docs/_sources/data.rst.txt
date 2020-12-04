@@ -14,3 +14,5 @@ Classes to pull data from common services are also provided such as :class:`plot
     :members:
 .. autoclass:: plotszoo.data.WandbData
     :members:
+.. autoclass:: plotszoo.data.OptunaData
+    :members:
