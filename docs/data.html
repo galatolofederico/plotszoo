@@ -206,6 +206,23 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="plotszoo.data.DataCollection.astype">
+<code class="sig-name descname">astype</code><span class="sig-paren">(</span><em class="sig-param">columns</em>, <em class="sig-param">type=&lt;class 'float'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.astype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the type of the scalars columns calling pandas <code class="docutils literal notranslate"><span class="pre">astype</span></code></p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">columns</dt>
+<dd class="field-odd"><p>List of colum to convert to numeric</p>
+</dd>
+<dt class="field-even">type</dt>
+<dd class="field-even"><p>Type to cast the column to (Default: <code class="docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="plotszoo.data.DataCollection.create_categorical">
 <code class="sig-name descname">create_categorical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">new_column</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.data.DataCollection.create_categorical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new categorical column (0, 1, 2, …) from a textual one (“sin”, “cos”, “tan”, ..-)</p>

@@ -79,7 +79,6 @@ class DataCollection:
         """
         assert self.is_scalars(), "You must have scalars to drop"
         null_indices = self.scalars.index[pd.isnull(self.scalars[columns]).any(1)].tolist()
-        
         self.scalars = self.scalars.drop(null_indices)
         if self.is_series():
             for null_index in null_indices:
@@ -198,6 +197,17 @@ class DataCollection:
             if len(s.index) != len(index) or not (s.index == index).all():
                 return False
         return True
+
+    def astype(self, columns, type=float):
+        r"""
+        Change the type of the scalars columns calling pandas ``astype``
+
+        Args:
+            :columns: List of colum to convert to numeric
+            :type: Type to cast the column to (Default: ``float``)
+        """
+        for column in columns:
+            self.scalars[column] = self.scalars[column].astype(type)
 
 
     def is_scalars(self):
