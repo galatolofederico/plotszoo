@@ -26,7 +26,7 @@ class ScalarsScatterCumulative(ScalarsPlot):
         self.y = y
         self.cumulative_fn = cumulative_fn
 
-    def plot(self, ax, sort=False, scatter=True, label=None):
+    def plot(self, ax, sort=False, scatter=True, label=None, x_seq=False):
         r"""
         Plot the cumulative scatter plot
 
@@ -35,6 +35,7 @@ class ScalarsScatterCumulative(ScalarsPlot):
             :sort: Sort the x data (Default: ``False``)
             :scatter: Scatter-plot the data points (Default: ``True``) 
             :label: Label to use to plot (Default: ``None``)
+            :x_seq: Use an integer sequence as x instead of the actual values (Default: ``False``)
         """
         s = []
         for index, row in self.data.scalars.iterrows():
@@ -44,6 +45,9 @@ class ScalarsScatterCumulative(ScalarsPlot):
             ))
         if sort:
             s = sorted(s, key=lambda e: e["x"]) 
+        
+        if x_seq:
+            for i, e in enumerate(s): e["x"] = i
 
         cumulative = []
         for e in s:
