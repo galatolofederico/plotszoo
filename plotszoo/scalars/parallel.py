@@ -28,16 +28,37 @@ class ScalarsParallelCoordinates(ScalarsPlot):
 
         self.groups.append(self.target)
 
-    def _set_ticks_for_axis(self, dim, ax, ticks):
+    def _set_ticks_for_axis(self, dim, ax, ticks_config):
         # TODO: custom ticks and scale for each ax
-        min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
-        step = val_range / float(ticks-1)
-        tick_labels = [round(min_val + step * i, 2) for i in range(ticks)]
-        norm_min = self.norm_df[self.groups[dim]].min()
-        norm_range = np.ptp(self.norm_df[self.groups[dim]])
-        norm_step = norm_range / float(ticks-1)
-        ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
-        ax.yaxis.set_ticks(ticks)
+        ticks_values = None
+        tick_labels = None
+
+        if ticks_config["type"] == "categorical":
+            ticks_list = ticks_config["ticks"]
+            assert type(ticks_list) is list, "When using a categorical tick, ticks must be the list of the categories"
+            min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
+            if ticks_config["scale"] == "relative":
+                ticks_values = [(tick-min_val)/val_range for tick in ticks_list]
+            elif ticks_config["scale"] == "sequential":
+                ticks_values = [i/(len(ticks_config["ticks"])-1) for i in range(0, len(ticks_config["ticks"]))]
+            
+            tick_labels = ticks_list
+
+        if ticks_config["type"] == "numeral":
+            ticks_number = ticks_config["ticks"]
+            min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
+            step = val_range / float(ticks_number-1)
+            tick_labels = [round(min_val + step * i, 2) for i in range(ticks_number)]
+        
+            norm_min = self.norm_df[self.groups[dim]].min()
+            norm_range = np.ptp(self.norm_df[self.groups[dim]])
+            norm_step = norm_range / float(ticks_number-1)
+
+            ticks_values = [round(norm_min + norm_step * i, 2) for i in range(ticks_number)]
+            if ticks_config["scale"] == "logarithmic":
+                tick_labels = ["1e"+str(l) for l in tick_labels]
+        
+        ax.yaxis.set_ticks(ticks_values)
         ax.set_yticklabels(tick_labels)
 
     def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues"):
@@ -53,13 +74,38 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         """
         assert len(axes) == len(self.groups) - 1, "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups) - 1)
         
+        if type(ticks) is dict:
+            for group in self.groups: assert group in ticks, "When using a ticks dictionary an entry for each group and for the target is needed, missing entry for '%s'" % (group, )
+        elif type(ticks) is int:
+            ticks_number = ticks
+            ticks = dict()
+            for group in self.groups: ticks[group] = dict(type="numeral", ticks=ticks_number, scale="relative")
+        else:
+            raise Exception("ticks must be 'int' or 'dict', found '%s' instead" % (type(ticks, )))
+        
         self.norm_df = self.data.scalars.copy()
 
         self.min_max_range = {}
         for col in self.groups:
+            ticks_config = ticks[col]
+
             serie = self.norm_df[col]
-            self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
-            self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
+            if ticks_config["scale"] == "relative":
+                self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
+                self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
+            elif ticks_config["scale"] == "sequential":
+                assert ticks_config["type"] == "categorical", "'sequential' scale can be used only with type=categorical"
+                self.min_max_range[col] = [0, len(ticks_config["ticks"])-1, len(ticks_config["ticks"])-1]
+                for i, tick in enumerate(ticks_config["ticks"]):
+                    serie = serie.replace(float(tick), i/(len(ticks_config["ticks"])-1))
+                self.norm_df[col] = serie
+            elif ticks_config["scale"] == "logarithmic":
+                self.norm_df[col] = np.log10(self.norm_df[col])
+                self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
+                self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
+            else:
+                raise Exception("scale can be 'relative', 'sequential' or 'logarithmic'")
+            
         
         x = list(range(0, len(self.groups)))
         cmap = matplotlib.cm.get_cmap(cmap)
@@ -70,16 +116,17 @@ class ScalarsParallelCoordinates(ScalarsPlot):
                 ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap(norm(self.norm_df.loc[idx, self.target])))
             ax.set_xlim([x[i], x[i+1]])
 
-        for dim, ax in enumerate(axes):
+        for dim, (ax, group) in enumerate(zip(axes, self.groups)):
+            ticks_config = ticks[group]
             ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([dim]))
-            self._set_ticks_for_axis(dim, ax, ticks)
+            self._set_ticks_for_axis(dim, ax, ticks_config)
             ax.set_xticklabels([self.groups[dim]])
                 
 
         ax = plt.twinx(axes[-1])
         dim = len(axes)
         ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([x[-2], x[-1]]))
-        self._set_ticks_for_axis(dim, ax, ticks)
+        self._set_ticks_for_axis(dim, ax, ticks[self.groups[-1]])
         ax.set_xticklabels([self.groups[-2], self.groups[-1]])
 
         if adjust_whitespaces:
