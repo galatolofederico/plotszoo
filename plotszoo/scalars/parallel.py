@@ -29,13 +29,14 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         self.groups.append(self.target)
 
     def _set_ticks_for_axis(self, dim, ax, ticks_config):
-        # TODO: custom ticks and scale for each ax
         ticks_values = None
         tick_labels = None
 
         if ticks_config["type"] == "categorical":
             ticks_list = ticks_config["ticks"]
             assert type(ticks_list) is list, "When using a categorical tick, ticks must be the list of the categories"
+            assert ticks_config["scale"] in ["relative", "sequential"], "When using categorical scale must be 'relative' or 'sequential'"
+            
             min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
             if ticks_config["scale"] == "relative":
                 ticks_values = [(tick-min_val)/val_range for tick in ticks_list]
@@ -67,9 +68,31 @@ class ScalarsParallelCoordinates(ScalarsPlot):
 
         Args:
             :axes: List of :mod:`matplotlib` axes to plot to (you must use the same number of axes and groups)
-            :ticks: Number of ticks to show in the axes (Default: 6)
+            :ticks: Ticks configuration dictionary or number of ticks to show in the axes (Default: 6)
             :cmap: :mod:`matplotlib` colormap to use (Default: "Blues")
             :adjust_withspaces: Call ``plt.subplots_adjust(wspace=0)`` to make the plot prettier (can have side-effects) (Default: ``True``)
+        
+        Configuration Dictionary:
+
+            A dictionary with a key for each ``group``. Each element is a dictionary with:
+                :type: ``categorical`` or ``numeral``
+                :ticks: Number of ticks if type is ``numeral``, the list of ticks in the type is ``categorical``
+                :scale: The scale to use ``linear`` or ``logarithmic`` if type is ``numeral``, ``relative`` or ``sequential`` if the type is ``categorical``
+            
+        Configuration Dictionary Example:
+
+            .. code:: python
+
+                {
+                    "config/train_steps": dict(type="categorical", ticks=[8, 16, 32, 64], scale="relative"),
+                    "config/gamma": dict(type="categorical", ticks=[0.9, 0.99, 0.999], scale="sequential"),
+                    "config/lr": dict(type="numeral", ticks=6, scale="logarithmic"),
+                    "config/max_clip_norm": dict(type="numeral", ticks=6, scale="linear"),
+                    "config/ent_coef": dict(type="numeral", ticks=6, scale="logarithmic"),
+                    "config/vf_coef": dict(type="numeral", ticks=6, scale="linear"),
+                    "config/target_entropy": dict(type="numeral", ticks=6, scale="linear"),
+                    "summary/reward": dict(type="numeral", ticks=6, scale="linear")
+                }
 
         """
         assert len(axes) == len(self.groups) - 1, "You must pass a list of n axes if you use n groups (axes: %d groups: %d)" % (len(axes), len(self.groups) - 1)
@@ -90,7 +113,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             ticks_config = ticks[col]
 
             serie = self.norm_df[col]
-            if ticks_config["scale"] == "relative":
+            if ticks_config["scale"] == "linear" or ticks_config["scale"] == "relative":
                 self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
                 self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
             elif ticks_config["scale"] == "sequential":
@@ -104,7 +127,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
                 self.min_max_range[col] = [serie.min(), serie.max(), np.ptp(serie)]
                 self.norm_df[col] = np.true_divide(serie - serie.min(), np.ptp(serie))
             else:
-                raise Exception("scale can be 'relative', 'sequential' or 'logarithmic'")
+                raise Exception("scale can be 'relative', 'sequential', 'linear' or 'logarithmic'")
             
         
         x = list(range(0, len(self.groups)))

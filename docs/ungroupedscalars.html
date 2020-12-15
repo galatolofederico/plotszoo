@@ -216,7 +216,7 @@
 <dd class="field-odd"><p>List of <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> axes to plot to (you must use the same number of axes and groups)</p>
 </dd>
 <dt class="field-even">ticks</dt>
-<dd class="field-even"><p>Number of ticks to show in the axes (Default: 6)</p>
+<dd class="field-even"><p>Ticks configuration dictionary or number of ticks to show in the axes (Default: 6)</p>
 </dd>
 <dt class="field-odd">cmap</dt>
 <dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> colormap to use (Default: “Blues”)</p>
@@ -227,6 +227,38 @@
 </dl>
 </dd>
 </dl>
+<p>Configuration Dictionary:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>A dictionary with a key for each <code class="docutils literal notranslate"><span class="pre">group</span></code>. Each element is a dictionary with:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">categorical</span></code> or <code class="docutils literal notranslate"><span class="pre">numeral</span></code></p>
+</dd>
+<dt class="field-even">ticks</dt>
+<dd class="field-even"><p>Number of ticks if type is <code class="docutils literal notranslate"><span class="pre">numeral</span></code>, the list of ticks in the type is <code class="docutils literal notranslate"><span class="pre">categorical</span></code></p>
+</dd>
+<dt class="field-odd">scale</dt>
+<dd class="field-odd"><p>The scale to use <code class="docutils literal notranslate"><span class="pre">linear</span></code> or <code class="docutils literal notranslate"><span class="pre">logarithmic</span></code> if type is <code class="docutils literal notranslate"><span class="pre">numeral</span></code>, <code class="docutils literal notranslate"><span class="pre">relative</span></code> or <code class="docutils literal notranslate"><span class="pre">sequential</span></code> if the type is <code class="docutils literal notranslate"><span class="pre">categorical</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>Configuration Dictionary Example:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;config/train_steps&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;categorical&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;relative&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/gamma&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;categorical&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;sequential&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/lr&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;logarithmic&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/max_clip_norm&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/ent_coef&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;logarithmic&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/vf_coef&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;config/target_entropy&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;summary/reward&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;numeral&quot;</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
