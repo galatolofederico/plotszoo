@@ -62,7 +62,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         ax.yaxis.set_ticks(ticks_values)
         ax.set_yticklabels(tick_labels)
 
-    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues", cmap_fn=None):
+    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues", cmap_fn=None, xticks_fn=None):
         r"""
         Plot the parallel coordinates chart
 
@@ -71,6 +71,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             :ticks: Ticks configuration dictionary or number of ticks to show in the axes (Default: 6)
             :cmap: :mod:`matplotlib` colormap to use (Default: ``Blues``)
             :cmap_fn: Function to use instead of the :mod:`matplotlib` colormap (Default: ``None``)
+            :xticks_fn: Function to create the xticks (Default: ``None``)
             :adjust_withspaces: Call ``plt.subplots_adjust(wspace=0)`` to make the plot prettier (can have side-effects) (Default: ``True``)
         
         Configuration Dictionary:
@@ -142,18 +143,22 @@ class ScalarsParallelCoordinates(ScalarsPlot):
                 ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap_fn(self, self.norm_df.loc[idx, self.target]))
             ax.set_xlim([x[i], x[i+1]])
 
+        if xticks_fn is None:
+            xticks_fn = lambda x: x
+
         for dim, (ax, group) in enumerate(zip(axes, self.groups)):
             ticks_config = ticks[group]
             ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([dim]))
             self._set_ticks_for_axis(dim, ax, ticks_config)
-            ax.set_xticklabels([self.groups[dim]])
+            ax.set_xticklabels([xticks_fn(label) for label in [self.groups[dim]]])
                 
 
         ax = plt.twinx(axes[-1])
         dim = len(axes)
         ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([x[-2], x[-1]]))
-        self._set_ticks_for_axis(dim, ax, ticks[self.groups[-1]])
-        ax.set_xticklabels([self.groups[-2], self.groups[-1]])
+        ax.set_xticklabels([xticks_fn(label) for label in [self.groups[-2], self.groups[-1]]])
 
+        self._set_ticks_for_axis(dim, ax, ticks[self.groups[-1]])
+        
         if adjust_whitespaces:
             plt.subplots_adjust(wspace=0)
