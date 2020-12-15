@@ -62,14 +62,15 @@ class ScalarsParallelCoordinates(ScalarsPlot):
         ax.yaxis.set_ticks(ticks_values)
         ax.set_yticklabels(tick_labels)
 
-    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues"):
+    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues", cmap_fn=None):
         r"""
         Plot the parallel coordinates chart
 
         Args:
             :axes: List of :mod:`matplotlib` axes to plot to (you must use the same number of axes and groups)
             :ticks: Ticks configuration dictionary or number of ticks to show in the axes (Default: 6)
-            :cmap: :mod:`matplotlib` colormap to use (Default: "Blues")
+            :cmap: :mod:`matplotlib` colormap to use (Default: ``Blues``)
+            :cmap_fn: Function to use instead of the :mod:`matplotlib` colormap (Default: ``None``)
             :adjust_withspaces: Call ``plt.subplots_adjust(wspace=0)`` to make the plot prettier (can have side-effects) (Default: ``True``)
         
         Configuration Dictionary:
@@ -131,12 +132,14 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             
         
         x = list(range(0, len(self.groups)))
-        cmap = matplotlib.cm.get_cmap(cmap)
-        norm = matplotlib.colors.Normalize(vmin=self.norm_df[self.target].min(), vmax=self.norm_df[self.target].max())
+        if cmap_fn is None:
+            cmap = matplotlib.cm.get_cmap(cmap)
+            norm = matplotlib.colors.Normalize(vmin=self.norm_df[self.target].min(), vmax=self.norm_df[self.target].max())
+            cmap_fn = lambda self, x: cmap(norm(x))
 
         for i, ax in enumerate(axes):
             for idx in self.norm_df.index:
-                ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap(norm(self.norm_df.loc[idx, self.target])))
+                ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap_fn(self, self.norm_df.loc[idx, self.target]))
             ax.set_xlim([x[i], x[i+1]])
 
         for dim, (ax, group) in enumerate(zip(axes, self.groups)):
