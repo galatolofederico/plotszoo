@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from plotszoo.scalars import ScalarsPlot
 
@@ -30,7 +31,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
 
     def _set_ticks_for_axis(self, dim, ax, ticks_config):
         ticks_values = None
-        tick_labels = None
+        ticks_labels = None
 
         if ticks_config["type"] == "categorical":
             ticks_list = ticks_config["ticks"]
@@ -43,13 +44,13 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             elif ticks_config["scale"] == "sequential":
                 ticks_values = [i/(len(ticks_config["ticks"])-1) for i in range(0, len(ticks_config["ticks"]))]
             
-            tick_labels = ticks_list
+            ticks_labels = ticks_list
 
         if ticks_config["type"] == "numeral":
             ticks_number = ticks_config["ticks"]
             min_val, max_val, val_range = self.min_max_range[self.groups[dim]]
             step = val_range / float(ticks_number-1)
-            tick_labels = [round(min_val + step * i, 2) for i in range(ticks_number)]
+            ticks_labels = [round(min_val + step * i, 2) for i in range(ticks_number)]
         
             norm_min = self.norm_df[self.groups[dim]].min()
             norm_range = np.ptp(self.norm_df[self.groups[dim]])
@@ -57,12 +58,12 @@ class ScalarsParallelCoordinates(ScalarsPlot):
 
             ticks_values = [round(norm_min + norm_step * i, 2) for i in range(ticks_number)]
             if ticks_config["scale"] == "logarithmic":
-                tick_labels = ["1e"+str(l) for l in tick_labels]
+                ticks_labels = ["1e"+str(l) for l in ticks_labels]
         
         ax.yaxis.set_ticks(ticks_values)
-        ax.set_yticklabels(tick_labels)
+        ax.set_yticklabels(ticks_labels)
 
-    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues", cmap_fn=None, xticks_fn=None):
+    def plot(self, axes, ticks=6, adjust_whitespaces=True, cmap="Blues", cmap_fn=None, xticks_fn=None, colorbar=False):
         r"""
         Plot the parallel coordinates chart
 
@@ -70,6 +71,7 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             :axes: List of :mod:`matplotlib` axes to plot to (you must use the same number of axes and groups)
             :ticks: Ticks configuration dictionary or number of ticks to show in the axes (Default: 6)
             :cmap: :mod:`matplotlib` colormap to use (Default: ``Blues``)
+            :colorbar: Plot the colorbar (Default: ``False``)
             :cmap_fn: Function to use instead of the :mod:`matplotlib` colormap (Default: ``None``)
             :xticks_fn: Function to create the xticks (Default: ``None``)
             :adjust_withspaces: Call ``plt.subplots_adjust(wspace=0)`` to make the plot prettier (can have side-effects) (Default: ``True``)
@@ -137,11 +139,13 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             cmap = matplotlib.cm.get_cmap(cmap)
             norm = matplotlib.colors.Normalize(vmin=self.norm_df[self.target].min(), vmax=self.norm_df[self.target].max())
             cmap_fn = lambda self, x: cmap(norm(x))
-
+        
         for i, ax in enumerate(axes):
             for idx in self.norm_df.index:
                 ax.plot(x, self.norm_df.loc[idx, self.groups], c=cmap_fn(self, self.norm_df.loc[idx, self.target]))
             ax.set_xlim([x[i], x[i+1]])
+            ax.set_ylim([0, 1])
+
 
         if xticks_fn is None:
             xticks_fn = lambda x: x
@@ -151,14 +155,33 @@ class ScalarsParallelCoordinates(ScalarsPlot):
             ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([dim]))
             self._set_ticks_for_axis(dim, ax, ticks_config)
             ax.set_xticklabels([xticks_fn(label) for label in [self.groups[dim]]])
-                
-
-        ax = plt.twinx(axes[-1])
-        dim = len(axes)
-        ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([x[-2], x[-1]]))
-        ax.set_xticklabels([xticks_fn(label) for label in [self.groups[-2], self.groups[-1]]])
-
-        self._set_ticks_for_axis(dim, ax, ticks[self.groups[-1]])
         
+
+        if colorbar:
+            fig = axes[-1].figure
+            series = self.norm_df[self.groups[-1]]
+            
+            norm = matplotlib.colors.Normalize(vmin=series.min(), vmax=series.max())
+            cmap = matplotlib.cm.get_cmap(cmap)
+            
+            divider = make_axes_locatable(axes[-1])
+            cax = divider.append_axes("right", size="20%", pad=0.1)
+            
+            fig.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax=cax, orientation="vertical", label=xticks_fn(self.groups[-1]))
+
+            self._set_ticks_for_axis(len(self.groups)-1, cax, ticks[self.groups[-1]])
+            
+        else:
+            ax = plt.twinx(axes[-1])
+            dim = len(axes)
+            ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([x[-2], x[-1]]))
+            ax.set_xticklabels([xticks_fn(label) for label in [self.groups[-2], self.groups[-1]]])
+
+            self._set_ticks_for_axis(dim, ax, ticks[self.groups[-1]])
+        
+        for ax in axes:
+            ax.spines["bottom"].set_visible(False)
+            ax.spines["top"].set_visible(False)
+            
         if adjust_whitespaces:
             plt.subplots_adjust(wspace=0)
