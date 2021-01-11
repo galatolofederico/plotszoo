@@ -35,3 +35,16 @@ def confidence_interval(serie):
     se = scipy.stats.sem(data)
     h = se * scipy.stats.t.ppf((1 + confidence) / 2., len(data)-1)
     return h
+
+def _walkdict(data, currentpath="", separator="/", ret=None):
+    for k, v in data.items():
+        level = "%s%s%s" % (currentpath, separator, k)
+        if isinstance(v, dict):
+            _walkdict(data=v, currentpath=level, ret=ret, separator=separator)
+        else:
+            ret[level] = v
+
+def flatten_dict(d, rootpath="", separator="/"):
+    fd = dict()
+    _walkdict(data=d, currentpath=rootpath, ret=fd, separator=separator)
+    return fd

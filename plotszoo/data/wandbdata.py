@@ -4,6 +4,7 @@ import json
 import os
 
 from plotszoo.data import DataCollection
+from plotszoo.utils import flatten_dict
 
 class WandbData(DataCollection):
     r"""
@@ -80,8 +81,7 @@ class WandbData(DataCollection):
         for run in self.runs:
             one_level_run = dict()
             for internal_key in internal_keys:
-                for key, value in run[internal_key].items():
-                    one_level_run["%s/%s" % (internal_key, key)] = value
+                one_level_run.update(flatten_dict(run[internal_key], internal_key))
             for keep_key in keep_keys:
                 one_level_run[keep_key] = run[keep_key]
             one_level_runs.append(one_level_run)
