@@ -10,14 +10,14 @@ class WandbData(DataCollection):
     Retrive scalars and time series from `wandb <https://www.wandb.com/>`_.
 
     Args:
-        :username: ``wandb`` username
+        :entity: ``wandb`` entity (username or team name)
         :project:  ``wandb`` project
         :query: MongoDB query for `wandb` (check `here <https://docs.wandb.com/ref/export-api>`_.)
         :cache: Cache retrived data (Default: ``True``)
         :cache_dir: Directory to cache the data to (Default: ``./.plotszoo-wandb-cache``)
         :verbose: Be verbose about pulling and caching (Default: ``True``)
     """
-    def __init__(self, username, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", verbose=True):
+    def __init__(self, entity, project, query, cache=True, cache_dir="./.plotszoo-wandb-cache", verbose=True):
         try:
             import wandb
         except:
@@ -29,13 +29,13 @@ class WandbData(DataCollection):
         except:
             raise Exception("The query '%s' must be a valid JSON" % (query))
         
-        self.username = username
+        self.entity = entity
         self.project = project
         self.cache = cache
         self.cache_dir = cache_dir
         self.verbose = verbose
 
-        self.id = hashlib.sha256(("%s/%s/%s" % (self.username, self.project, self.query)).encode()).hexdigest()
+        self.id = hashlib.sha256(("%s/%s/%s" % (self.entity, self.project, self.query)).encode()).hexdigest()
         self.cache_file = os.path.join(self.cache_dir, self.id+".json")
     
     def pull_scalars(self, state="finished", force_update=False):
@@ -57,7 +57,7 @@ class WandbData(DataCollection):
             self.runs = json.load(open(self.cache_file, "r"))
         else:
             if self.verbose: print("[!] Pulling data from wandb")
-            wandb_runs = api.runs("%s/%s" % (self.username, self.project), json.loads(self.query))
+            wandb_runs = api.runs("%s/%s" % (self.entity, self.project), json.loads(self.query))
             self.runs = []
             for wandb_run in wandb_runs:
                 if state is None or wandb_run.state == state:
@@ -111,7 +111,7 @@ class WandbData(DataCollection):
                 series_df = pd.read_csv(cache_file)
             else:
                 if self.verbose: print("[!] Pulling data from wandb for run_id=%s" % (run["id"], ))
-                wandb_run = api.run("%s/%s/%s" % (self.username, self.project, run["id"]))
+                wandb_run = api.run("%s/%s/%s" % (self.entity, self.project, run["id"]))
                 if scan_history:
                     history = wandb_run.scan_history()
                     series_df = list()
