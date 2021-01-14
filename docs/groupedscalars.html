@@ -164,7 +164,7 @@
 <p>Here there are the classes that plot grouped scalars</p>
 <dl class="py class">
 <dt id="plotszoo.scalars.grouped.GroupedScalarsBarchart">
-<em class="property">class </em><code class="sig-prename descclassname">plotszoo.scalars.grouped.</code><code class="sig-name descname">GroupedScalarsBarchart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">groups</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.grouped.GroupedScalarsBarchart" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plotszoo.scalars.grouped.</code><code class="sig-name descname">GroupedScalarsBarchart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">groups</span></em>, <em class="sig-param"><span class="n">targets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.grouped.GroupedScalarsBarchart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a grouped mean barchart from the scalars as well as the mean confidence intervals</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="field-list simple">
@@ -174,8 +174,8 @@
 <dt class="field-even">groups</dt>
 <dd class="field-even"><p>A list of indices to group by</p>
 </dd>
-<dt class="field-odd">target</dt>
-<dd class="field-odd"><p>The index to plot</p>
+<dt class="field-odd">targets</dt>
+<dd class="field-odd"><p>One or a list of targets to plot</p>
 </dd>
 </dl>
 </dd>
@@ -202,13 +202,38 @@
     <span class="n">barchart</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">yticks_fn</span><span class="o">=</span><span class="n">yticks_fn</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;images/GroupedScalarsBarchart_subplots.png&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/GroupedScalarsBarchart_subplots.png"><img alt="_images/GroupedScalarsBarchart_subplots.png" src="_images/GroupedScalarsBarchart_subplots.png" style="width: 600px;" /></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">import</span> <span class="nn">plotszoo</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">scalars</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">iris</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">])</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">plotszoo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataCollection</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_scalars</span><span class="p">(</span><span class="n">scalars</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">yticks_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target_names&quot;</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+
+<span class="n">barchart</span> <span class="o">=</span> <span class="n">plotszoo</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">GroupedScalarsBarchart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">])</span>
+<span class="n">barchart</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Iris&quot;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">yticks_fn</span><span class="o">=</span><span class="n">yticks_fn</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;images/GroupedScalarsBarchart.png&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/GroupedScalarsBarchart.png"><img alt="_images/GroupedScalarsBarchart.png" src="_images/GroupedScalarsBarchart.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt id="plotszoo.scalars.grouped.GroupedScalarsBarchart.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nbins</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">yticks_fn</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.grouped.GroupedScalarsBarchart.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nbins</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">yticks_fn</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">legend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotszoo.scalars.grouped.GroupedScalarsBarchart.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the grouped mean barchart</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="field-list simple">
@@ -226,6 +251,9 @@
 </dd>
 <dt class="field-odd">yticks_fn</dt>
 <dd class="field-odd"><p>A function to convert each index to text (Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p>
+</dd>
+<dt class="field-even">legend</dt>
+<dd class="field-even"><p>Plot the legend (Default: auto)</p>
 </dd>
 </dl>
 </dd>
