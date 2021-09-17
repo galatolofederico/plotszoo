@@ -12,6 +12,13 @@ Feel free to use it, submit your own plots, bugfixes, requests or ideas. Any PR 
 
 *Repository under active development, braking changes may (and will) occur*
 
+## Installation
+
+```
+pip install plotszoo
+```
+
+
 ## Examples
 
 ### Parallel Coordinates Plot
